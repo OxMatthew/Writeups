@@ -2,7 +2,7 @@ Virtual Network + pfSense Lab
 
 So I started out by creating a virtualized internal network in VirtualBox. The idea was to simulate a real internal subnet that I could use to practice networking and basic pentesting.
 
-To do that, I set all the VMs to use an Internal Network in VirtualBox and named it LAB. That basically acts like a virtual switch, so everything on that network can talk to each other but has no internet access by default.
+To do that, I set all the VMs to use an Internal Network in VirtualBox and named it LAB. This acts like a virtual switch so everything on that network can talk to each other but has no internet access by default.
 
 The machines I used were:
 
@@ -10,7 +10,7 @@ Kali Linux (for scanning/testing)
 Ubuntu (target machine)
 Windows 10 (target machine)
 
-Since this network doesn’t have DHCP, I had to manually assign IP addresses to everything.
+Since this network doesn’t have DHCP I had to manually assign IP addresses to everything.
 
 On Windows I did this through:
 
