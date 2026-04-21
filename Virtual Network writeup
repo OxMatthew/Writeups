@@ -1,0 +1,56 @@
+Virtual Network + pfSense Lab
+
+So I started out by creating a virtualized internal network in VirtualBox. The idea was to simulate a real internal subnet that I could use to practice networking and basic pentesting.
+
+To do that, I set all the VMs to use an Internal Network in VirtualBox and named it LAB. That basically acts like a virtual switch, so everything on that network can talk to each other but has no internet access by default.
+
+The machines I used were:
+
+Kali Linux (for scanning/testing)
+Ubuntu (target machine)
+Windows 10 (target machine)
+
+Since this network doesn’t have DHCP, I had to manually assign IP addresses to everything.
+
+On Windows I did this through:
+
+Control Panel → Network Settings → IPv4 config
+
+On Ubuntu it was a bit different, I set the IP manually through the terminal.
+
+Everything was put on the same subnet:
+
+192.168.50.0/24
+
+so all the machines could communicate with each other directly.
+
+After that, I added a pfSense VM to act as a router.
+
+The pfSense box had:
+
+one adapter set to NAT (for internet access)
+one adapter connected to the LAB internal network
+
+Then I set the LAN IP on pfSense to:
+
+192.168.50.1
+
+That became the default gateway for the whole subnet.
+
+Once pfSense was in place, I updated each machine to use it as the default route.
+
+On Linux I did:
+
+ip route add default via 192.168.50.1
+
+and on Windows I set the gateway in the IPv4 settings.
+
+At that point, traffic from the internal network was being routed through pfSense and out to the internet through NAT.
+
+So by the end of it:
+
+all machines could talk to each other on the internal network
+the network was still isolated logically
+but now had controlled internet access through pfSense
+
+This basically gave me a small but realistic internal network setup that I can now use for things like scanning, service enumeration, and testing firewall rules.
