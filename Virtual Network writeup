@@ -55,4 +55,4 @@ but now had controlled internet access through pfSense
 
 This basically gave me a small but realistic internal network setup that I can now use for things like scanning, service enumeration, and testing firewall rules.
 
-![Virtual Network Proof of Concept](assets/Virtual%20network%20proof%20of%20concept/proof.png)
+![proof of concept](./assets/Virtual%20network%20proof%20of%20concept/proof.png)
