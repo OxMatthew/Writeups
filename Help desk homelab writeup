@@ -1,0 +1,186 @@
+#  Level 1 Help Desk Home Lab (Active Directory)
+
+## Overview
+For this project I built out a Windows Active Directory lab to simulate a small company environment and practice real help desk tasks.
+
+The main goal was to get hands-on with things like:
+- Password resets and account unlocks  
+- User creation and permissions  
+- DNS and domain issues  
+- Group Policy (GPO)  
+- Shared drives and access control  
+
+Instead of just setting it up, I ran through real ticket scenarios and documented how I fixed each one.
+
+---
+
+## Lab Setup
+- Domain Controller: Windows Server 2022 (DC01)  
+- Domain: mattlab.local  
+- Clients: CL01 + CL02  
+- Network: Internal lab network (routed through pfSense)
+
+### What I set up:
+- Created OUs to organize users and computers  
+- Created users + security groups  
+- Set DNS on clients to point to the domain controller  
+- Built a shared drive with proper permissions  
+
+---
+
+## Ticket Scenarios
+
+### Ticket 1 — Password Reset
+**Issue:** User couldn’t log in (forgot password)
+
+**What I did:**
+- Found the user in Active Directory  
+- Reset the password  
+- Forced password change at login  
+
+**Result:** User logged in and updated password successfully  
+
+---
+
+### Ticket 2 — Account Lockout
+**Issue:** User locked out after too many failed attempts  
+
+**What I did:**
+- Checked account status in AD  
+- Unlocked the account  
+- Reset password just in case  
+
+**Root cause:** Account lockout policy triggered  
+
+**Result:** User was able to log in again  
+
+---
+
+### Ticket 3 — New User Onboarding
+**Issue:** New employee needed an account + access  
+
+**What I did:**
+- Created user in Active Directory  
+- Added them to SalesUsers + SharedDrive_RO  
+- Set temp password  
+
+**Result:** User logged in and accessed shared drive  
+
+---
+
+### Ticket 4 — User Deactivation
+**Issue:** Employee left the company  
+
+**What I did:**
+- Disabled the account  
+- Moved it to Disabled Users OU  
+- Removed all group memberships  
+
+**Result:** Account fully secured and no longer usable  
+
+---
+
+### Ticket 5 — Shared Drive Access Denied
+**Issue:** User couldn’t access shared drive  
+
+**What I did:**
+- Reproduced the issue on client machine  
+- Checked group membership  
+- Added user to correct shared drive group  
+- Ran gpupdate  
+
+**Root cause:** User wasn’t in the correct group  
+
+**Result:** Access restored  
+
+---
+
+### Ticket 6 — Domain Join Failure (aka it’s always DNS)
+**Issue:** Client couldn’t join domain  
+
+**What I did:**
+- Checked IP config  
+- Found DNS was set to 8.8.8.8  
+- Tested with nslookup (failed)  
+- Changed DNS to domain controller  
+
+**Root cause:** Wrong DNS server  
+
+**Result:** Domain join worked after fix  
+
+---
+
+### Ticket 7 — Login Failure After Password Change
+**Issue:** User couldn’t log in after changing password  
+
+**What I did:**
+- Verified account wasn’t locked or disabled  
+- Reset password  
+- Checked for user-side issues (caps lock, username format)  
+- Verified connection to domain controller  
+
+**Root cause:** Most likely user input error  
+
+**Result:** User logged in successfully  
+
+---
+
+### Ticket 8 — GPO Not Applying (this one sucked)
+**Issue:** Policy wasn’t applying to user  
+
+**What I did:**
+- Ran gpupdate /force  
+- Checked gpresult /r  
+- Verified OU placement  
+- Found GPO wasn’t linked correctly  
+
+**Root cause:** User in wrong OU / GPO not linked  
+
+**Result:** Policy applied after fixing OU/link  
+
+---
+
+### Ticket 9 — Network Drive Mapping
+**Issue:** Users needed shared drive automatically  
+
+**What I did:**
+- Verified manual access first  
+- Created GPO for drive mapping  
+- Linked it to Users OU  
+
+**Result:** Drive mapped automatically on login  
+
+---
+
+### Ticket 10 — Software Deployment from Network Share
+**Issue:** User needed access to internal installer  
+
+**What I did:**
+- Placed installer in shared folder  
+- Verified permissions  
+- Accessed and ran from client machine  
+
+**Result:** User was able to run installer  
+
+---
+
+## What I Learned
+This lab helped me get comfortable with how a real Windows domain works.
+
+Main things I took away:
+- How important DNS is (seriously everything breaks without it)  
+- How to manage users, groups, and permissions in Active Directory  
+- How to troubleshoot common help desk issues step by step  
+- How Group Policy actually applies (and how easy it is to mess up)  
+- How file sharing and permissions work in a real environment  
+
+Overall this was one of the most useful labs I’ve done so far. It gave me real experience with the kind of tasks I’d be doing in an entry-level IT/help desk role.
+
+---
+
+## Skills Demonstrated
+- Active Directory administration  
+- DNS troubleshooting  
+- Group Policy management  
+- User lifecycle management (onboarding/offboarding)  
+- File share and permission management  
